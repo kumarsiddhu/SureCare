@@ -62,16 +62,24 @@ const Login = () => {
               <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
                   <div>
-                    <h2>Sign up</h2>
+                    <h2>Welcome</h2>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                      tempor incididunt ut labore et dolore magna aliqua.
+                    Sign in for SureCare and discover a world of comprehensive care at your fingertips..
                     </p>
-                    <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>
-                        Register Now!
-                      </CButton>
-                    </Link>
+
+                       {/* <div><CImage fluid src="/images/react.jpg" /></div> */}
+
+                       <div className="d-flex justify-content-center">
+  <h1 style={{ color: '#0D58AD' }}>Sure</h1> {/* Custom color for Sure */}
+  <h1 style={{ color: '#00AFE0' }}>Care</h1>  {/* Custom color for Care */}
+</div>
+
+                     
+
+                     
+                        
+             
+          
                   </div>
                 </CCardBody>
               </CCard>
