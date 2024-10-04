@@ -5,7 +5,8 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 
 const CustomerManagement = React.lazy(() => import('./views/customerManagement/CustomerManagement'))
-const CustomerViewDetails = React.lazy(  () => import('./views/customerManagement/CustomerViewDetails'),
+const CustomerViewDetails = React.lazy(
+  () => import('./views/customerManagement/CustomerViewDetails'),
 )
 // import CustomerViewDetails from './views/customer-management/CustomerViewDetails';
 const ProviderManagement = React.lazy(() => import('./views/providerManagement/ProviderManagement'))
@@ -68,7 +69,7 @@ const routes = [
   { path: '/customer-management', name: 'customer-management', element: CustomerManagement },
   { path: '/provider-management', name: 'provider-management', element: ProviderManagement },
   { path: '/provider-management/:id', name: 'ProviderViewDetails', element: ProviderViewDetails },
-  { path: '/customer-management/:id', name: 'Customer Details', element: CustomerViewDetails},
+  { path: '/customer-management/:id', name: 'Customer Details', element: CustomerViewDetails },
   //  ProviderViewDetails
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },

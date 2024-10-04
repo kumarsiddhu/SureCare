@@ -33,10 +33,14 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarHeader className="border-bottom">
-        <CSidebarBrand to="/">
-         <h1> <span>Sure</span>Care</h1>
-         </CSidebarBrand> 
-         {/* <CCloseButton
+        <div to="/">
+          <div className="d-flex justify-content-center underline-none">
+            <h1 style={{ color: '#ffffff' }}>Sure</h1> {/* Custom color for Sure */}
+            <h1 style={{ color: '#ffffff' }}>Care</h1> {/* Custom color for Care */}
+                      
+          </div>
+        </div>
+        {/* <CCloseButton
           className="d-lg-none"
           dark
           onClick={() => dispatch({ type: 'set', sidebarShow: false })}

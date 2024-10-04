@@ -73,6 +73,7 @@ const CustomerManagement = () => {
           />
         </CInputGroup>
       </CForm>
+      
       <DataTable columns={columns} data={filteredData} pagination />
     </>
   )
