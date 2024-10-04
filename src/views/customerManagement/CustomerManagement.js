@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { CForm, CFormInput, CInputGroup, CInputGroupText ,CButton} from '@coreui/react'; // Import necessary CoreUI components
-import DataTable from 'react-data-table-component';
-import CIcon from '@coreui/icons-react'; // Ensure this is imported correctly
-import { cilSearch } from '@coreui/icons'; // Import the search icon
-import Alerts from '../notifications/alerts/Alerts';
-
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom' // Import useNavigate
+import { CForm, CFormInput, CInputGroup, CInputGroupText, CButton } from '@coreui/react'
+import DataTable from 'react-data-table-component'
+import CIcon from '@coreui/icons-react'
+import { cilSearch } from '@coreui/icons'
 
 const CustomerManagement = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate() // Initialize useNavigate
+  const [searchQuery, setSearchQuery] = useState('')
 
   const columns = [
     {
@@ -27,35 +27,40 @@ const CustomerManagement = () => {
     },
     {
       name: 'Actions',
-      selector: (row) => row.actions,
       cell: (row) => (
-           <div>
-
-          <CButton color="primary"  onClick={()=>alert(row.id)} >View</CButton>
-           </div>
-      )
+        <CButton color="primary" onClick={() => handleCustomerViewDetails(row.id)}>
+          View
+        </CButton>
+      ),
     },
-  ];
+  ]
 
   const data = [
-    { id: 1, fullname: 'Beetlejuice', mobileNumber: '7856452178', email: "nea@gmail.com"},
-    { id: 2, fullname: 'Ghostbusters', mobileNumber: '9876543210', email: "ghostbusters@gmail.com" },
-    { id: 3, fullname: 'Inception', mobileNumber: '1234567890', email: "inception@gmail.com" },
-    
-  ];
+    { id: 1, fullname: 'Beetlejuice', mobileNumber: '7856452178', email: 'nea@gmail.com' },
+    {
+      id: 2,
+      fullname: 'Ghostbusters',
+      mobileNumber: '9876543210',
+      email: 'ghostbusters@gmail.com',
+    },
+    { id: 3, fullname: 'Inception', mobileNumber: '1234567890', email: 'inception@gmail.com' },
+  ]
 
-  // Filter data based on search query
   const filteredData = data.filter(
     (item) =>
-      item.fullname.toLowerCase().includes(searchQuery.toLowerCase()) || // Corrected key
-      item.mobileNumber.includes(searchQuery) || // Added check for mobile number
-      item.email.toLowerCase().includes(searchQuery.toLowerCase()) // Added check for email
-  );
+      item.fullname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.mobileNumber.includes(searchQuery) ||
+      item.email.toLowerCase().includes(searchQuery.toLowerCase()),
+  )
+
+  const handleCustomerViewDetails = (id) => {
+    navigate(`/customer-management/${id}`) // Navigate to the details page with the ID
+  }
 
   return (
     <>
-      <CForm className='d-flex justify-content-end'>
-        <CInputGroup className="mb-3 w-25"> {/* Ensure proper order */}
+      <CForm className="d-flex justify-content-end">
+        <CInputGroup className="mb-3 w-25">
           <CInputGroupText>
             <CIcon icon={cilSearch} />
           </CInputGroupText>
@@ -70,7 +75,7 @@ const CustomerManagement = () => {
       </CForm>
       <DataTable columns={columns} data={filteredData} pagination />
     </>
-  );
-};
+  )
+}
 
-export default React.memo(CustomerManagement);
+export default React.memo(CustomerManagement)
