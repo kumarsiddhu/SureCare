@@ -35,7 +35,7 @@ const AppSidebar = () => {
       <CSidebarHeader className="border-bottom">
         <div to="/">
           <div className="d-flex justify-content-center underline-none">
-            <h1 style={{ color: '#ffffff' }}>Sure</h1> {/* Custom color for Sure */}
+            <h1 style={{ color: '#A020F0' }}>Sure</h1> {/* Custom color for Sure */}
             <h1 style={{ color: '#ffffff' }}>Care</h1> {/* Custom color for Care */}
                       
           </div>
