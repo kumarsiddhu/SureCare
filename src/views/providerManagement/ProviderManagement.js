@@ -1,17 +1,13 @@
 import React, { useState } from 'react'
-import { CForm, CFormInput, CInputGroup, CInputGroupText, CButton } from '@coreui/react' // Import necessary CoreUI components
+import { useNavigate } from 'react-router-dom' // Import useNavigate
+import { CForm, CFormInput, CInputGroup, CInputGroupText, CButton } from '@coreui/react'
 import DataTable from 'react-data-table-component'
-import CIcon from '@coreui/icons-react' // Ensure this is imported correctly
-import { cilSearch } from '@coreui/icons' // Import the search icon
-import Alerts from '../notifications/alerts/Alerts'
+import CIcon from '@coreui/icons-react'
+import { cilSearch } from '@coreui/icons'
 
-const CustomerManagement = () => {
+const providerManagement = () => {
+  const navigate = useNavigate() // Initialize useNavigate
   const [searchQuery, setSearchQuery] = useState('')
-
-  const handleView = (index) => {
-    alert(index)
-    history.push(`/provider-management/${index}`)
-  }
 
   const columns = [
     {
@@ -31,14 +27,10 @@ const CustomerManagement = () => {
     },
     {
       name: 'Actions',
-      selector: (row) => row.actions,
       cell: (row) => (
-        <div>
-          {/* <CButton color="primary" onClick={() =>history.push(`/providerDetail/${(row.id)}` )}> */}
-          <CButton color="primary" onClick={() => handleView(row.id)}>
-            View
-          </CButton>
-        </div>
+        <CButton color="primary" onClick={() => handleProviderViewDetails(row.id)}>
+          View
+        </CButton>
       ),
     },
   ]
@@ -54,23 +46,22 @@ const CustomerManagement = () => {
     { id: 3, fullname: 'Inception', mobileNumber: '1234567890', email: 'inception@gmail.com' },
   ]
 
-  // Filter data based on search query
   const filteredData = data.filter(
     (item) =>
-      item.fullname.toLowerCase().includes(searchQuery.toLowerCase()) || // Corrected key
-      item.mobileNumber.includes(searchQuery) || // Added check for mobile number
-      item.email.toLowerCase().includes(searchQuery.toLowerCase()), // Added check for email
+      item.fullname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.mobileNumber.includes(searchQuery) ||
+      item.email.toLowerCase().includes(searchQuery.toLowerCase()),
   )
+
+  const handleProviderViewDetails = (id) => {
+    navigate(`/provider-management/${id}`) // Navigate to the details page with the ID
+  }
 
   return (
     <>
-      <CForm className="d-flex justify-content-end">
+      <CForm className="  d-flex justify-content-end">
         <CInputGroup className="mb-3 w-25">
-          {' '}
-          {/* Ensure proper order */}
-          <CInputGroupText>
-            <CIcon icon={cilSearch} />
-          </CInputGroupText>
+         
           <CFormInput
             type="text"
             id="search-input"
@@ -78,11 +69,15 @@ const CustomerManagement = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
+           <CInputGroupText>
+            <CIcon icon={cilSearch} />
+          </CInputGroupText>
         </CInputGroup>
       </CForm>
+      
       <DataTable columns={columns} data={filteredData} pagination />
     </>
   )
 }
 
-export default React.memo(CustomerManagement)
+export default React.memo(providerManagement)
