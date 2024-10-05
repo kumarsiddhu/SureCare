@@ -1,12 +1,21 @@
 // apiService.js
 import axios from 'axios'
+import { baseUrl } from './baseUrl'
 
-const baseUrl = 'https://api-generator.retool.com/uqkjI8'
+const endPoint = 'data'
 
-// Function to handle GET requests
-export const getCustomerData = async (id) => {
+export const getCustomerData = async () => {
   try {
-    const response = await axios.get(`${baseUrl}/data/${id}`)
+    const response = await axios.get(`${baseUrl}/${endPoint}`)
+    return response.data
+  } catch (error) {
+    handleError(error)
+  }
+}
+// Function to handle GET requests
+export const getCustomerDataByID = async (id) => {
+  try {
+    const response = await axios.get(`${baseUrl}/${endPoint}/${id}`)
     return response.data
   } catch (error) {
     handleError(error)
@@ -16,7 +25,7 @@ export const getCustomerData = async (id) => {
 // Function to handle PUT requests (update customer data)
 export const updateCustomerData = async (id, data) => {
   try {
-    const response = await axios.put(`${baseUrl}/data/${id}`, data, {
+    const response = await axios.put(`${baseUrl}/${endPoint}/${id}`, data, {
       headers: {
         'Content-Type': 'application/json',
       },

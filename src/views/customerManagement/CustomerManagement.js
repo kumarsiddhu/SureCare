@@ -4,15 +4,15 @@ import { CForm, CFormInput, CInputGroup, CInputGroupText, CButton } from '@coreu
 import DataTable from 'react-data-table-component'
 import CIcon from '@coreui/icons-react'
 import { cilSearch } from '@coreui/icons'
-import axios from 'axios'
+import { getCustomerData } from '../../APIs/CustomerAPI'
 
 const CustomerManagement = () => {
-  const navigate = useNavigate() // Initialize useNavigate
-  const [searchQuery, setSearchQuery] = useState('') // For search input
-  const [customerData, setCustomerData] = useState([]) // State to store customer data
-  const [loading, setLoading] = useState(false) // State to handle loading state
+  const navigate = useNavigate()
+  const [searchQuery, setSearchQuery] = useState('')
+  const [customerData, setCustomerData] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
-  // Define columns for DataTable
   const columns = [
     {
       name: 'Full Name',
@@ -31,7 +31,12 @@ const CustomerManagement = () => {
     },
     {
       name: 'Status',
-      selector: (row) => row.status,
+      cell: (row) => (
+        <span style={{ color: getStatusColor(row.status) }}>
+          {`${row.status.charAt(0).toUpperCase()}${row.status.slice(1).toLowerCase()}`}{' '}
+          {/* Capitalize first letter and lowercase the rest */}
+        </span>
+      ),
       sortable: true,
     },
     {
@@ -43,60 +48,91 @@ const CustomerManagement = () => {
       ),
     },
   ]
+  const getStatusColor = (status) => {
+    switch (status.toLowerCase()) {
+      case 'active':
+        return 'green'
+      case 'inactive':
+        return 'orange' // You can use 'warning' if you prefer that term
+      case 'suspended':
+        return 'red'
+      default:
+        return 'black' // Default color if status is not recognized
+    }
+  }
 
-  // Fetch customer data from API on component mount
   useEffect(() => {
-    setLoading(true)
-    axios
-      .get('https://api-generator.retool.com/uqkjI8/data')
-      .then((response) => {
-        setCustomerData(response.data) // Store the fetched data in state
-        setLoading(false)
-      })
-      .catch((error) => {
+    const fetchCustomer = async () => {
+      setLoading(true)
+      try {
+        const data = await getCustomerData()
+        console.log('Fetched Customer Data:', data) // Log the fetched data
+        setCustomerData(data)
+        setError(null)
+      } catch (error) {
         console.error('Error fetching customer data:', error)
+        setError('Failed to fetch customer data')
+      } finally {
         setLoading(false)
-      })
+      }
+    }
+
+    fetchCustomer()
   }, [])
 
   // Filter the data based on search query
-  const filteredData = customerData.filter(
-    (item) =>
-      item.fullname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.mobileNumber.includes(searchQuery) ||
-      item.email.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
+  const filteredData = searchQuery
+    ? customerData.filter(
+        (item) =>
+          item.fullname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.mobileNumber.includes(searchQuery) ||
+          item.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.status.toLowerCase().includes(searchQuery.toLowerCase()),
+      )
+    : customerData // Return all data if search query is empty
 
-  // Navigate to customer details page
   const handleCustomerViewDetails = (id) => {
-    navigate(`/customer-management/${id}`) // Navigate to details page with the customer ID
+    navigate(`/customer-management/${id}`)
+  }
+
+  const centeredMessageStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '300px',
+    fontSize: '1.5rem',
+    color: '#808080',
   }
 
   return (
     <>
-      {/* Search Form */}
       <CForm className="d-flex justify-content-end">
-        <CInputGroup className="mb-3 w-25">
-          <CInputGroupText>
-            <CIcon icon={cilSearch} />
-          </CInputGroupText>
+        <CInputGroup className="mb-3 w-50">
           <CFormInput
             type="text"
             id="search-input"
             placeholder="Search by full name, mobile, or email"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              console.log('Search Query:', e.target.value)
+              setSearchQuery(e.target.value)
+            }}
           />
+          <CInputGroupText>
+            <CIcon icon={cilSearch} />
+          </CInputGroupText>
         </CInputGroup>
       </CForm>
 
-      {/* Data Table */}
-      <DataTable
-        columns={columns}
-        data={filteredData}
-        pagination
-        progressPending={loading} // Show a loading indicator while fetching data
-      />
+      {loading ? (
+        <div style={centeredMessageStyle}>Loading...</div>
+      ) : error ? (
+        <div style={centeredMessageStyle}>{error}</div>
+      ) : filteredData.length === 0 ? ( // Check if no data is available after filtering
+        <div style={centeredMessageStyle}>There are no records to display</div>
+      ) : (
+        <DataTable columns={columns} data={filteredData} pagination />
+      )}
     </>
   )
 }
