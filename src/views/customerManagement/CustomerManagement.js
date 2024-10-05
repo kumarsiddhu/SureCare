@@ -26,6 +26,11 @@ const CustomerManagement = () => {
       sortable: true,
     },
     {
+      name: 'Status',
+      selector: (row) => row.status,
+      sortable: true,
+    },
+    {
       name: 'Actions',
       cell: (row) => (
         <CButton color="primary" onClick={() => handleCustomerViewDetails(row.id)}>
@@ -36,15 +41,16 @@ const CustomerManagement = () => {
   ]
 
   const data = [
-    { id: 1, fullname: 'Beetlejuice', mobileNumber: '7856452178', email: 'nea@gmail.com' },
+    { id: 1, fullname: 'Beetlejuice', mobileNumber: '7856452178', email: 'nea@gmail.com', status: "Inactive" },
     {
       id: 2,
       fullname: 'Ghostbusters',
       mobileNumber: '9876543210',
       email: 'ghostbusters@gmail.com',
+      status: "Active"
     },
-    { id: 3, fullname: 'Inception', mobileNumber: '1234567890', email: 'inception@gmail.com' },
-  ]
+    { id: 3, fullname: 'Inception', mobileNumber: '1234567890', email: 'inception@gmail.com', status: "Active" },
+  ];
 
   const filteredData = data.filter(
     (item) =>

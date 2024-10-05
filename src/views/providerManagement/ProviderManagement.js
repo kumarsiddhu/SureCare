@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom' // Import useNavigate
-import { CForm, CFormInput, CInputGroup, CInputGroupText, CButton } from '@coreui/react'
-import DataTable from 'react-data-table-component'
-import CIcon from '@coreui/icons-react'
-import { cilSearch } from '@coreui/icons'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { CForm, CFormInput, CInputGroup, CInputGroupText, CButton } from '@coreui/react';
+import DataTable from 'react-data-table-component';
+import CIcon from '@coreui/icons-react';
+import { cilSearch } from '@coreui/icons';
 
-const providerManagement = () => {
-  const navigate = useNavigate() // Initialize useNavigate
-  const [searchQuery, setSearchQuery] = useState('')
+const ProviderManagement = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
+  const [searchQuery, setSearchQuery] = useState('');
 
   const columns = [
     {
@@ -26,6 +26,11 @@ const providerManagement = () => {
       sortable: true,
     },
     {
+      name: 'Status',
+      selector: (row) => row.status,
+      sortable: true,
+    },
+    {
       name: 'Actions',
       cell: (row) => (
         <CButton color="primary" onClick={() => handleProviderViewDetails(row.id)}>
@@ -33,35 +38,35 @@ const providerManagement = () => {
         </CButton>
       ),
     },
-  ]
+  ];
 
   const data = [
-    { id: 1, fullname: 'Beetlejuice', mobileNumber: '7856452178', email: 'nea@gmail.com' },
+    { id: 1, fullname: 'Beetlejuice', mobileNumber: '7856452178', email: 'nea@gmail.com', status: "Inactive" },
     {
       id: 2,
       fullname: 'Ghostbusters',
       mobileNumber: '9876543210',
       email: 'ghostbusters@gmail.com',
+      status: "Active"
     },
-    { id: 3, fullname: 'Inception', mobileNumber: '1234567890', email: 'inception@gmail.com' },
-  ]
+    { id: 3, fullname: 'Inception', mobileNumber: '1234567890', email: 'inception@gmail.com', status: "Active" },
+  ];
 
   const filteredData = data.filter(
     (item) =>
       item.fullname.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.mobileNumber.includes(searchQuery) ||
       item.email.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
+  );
 
   const handleProviderViewDetails = (id) => {
-    navigate(`/provider-management/${id}`) // Navigate to the details page with the ID
-  }
+    navigate(`/provider-management/${id}`); // Navigate to the details page with the ID
+  };
 
   return (
     <>
-      <CForm className="  d-flex justify-content-end">
+      <CForm className="d-flex justify-content-end">
         <CInputGroup className="mb-3 w-25">
-         
           <CFormInput
             type="text"
             id="search-input"
@@ -69,15 +74,15 @@ const providerManagement = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-           <CInputGroupText>
+          <CInputGroupText>
             <CIcon icon={cilSearch} />
           </CInputGroupText>
         </CInputGroup>
       </CForm>
-      
+
       <DataTable columns={columns} data={filteredData} pagination />
     </>
-  )
-}
+  );
+};
 
-export default React.memo(providerManagement)
+export default React.memo(ProviderManagement);
