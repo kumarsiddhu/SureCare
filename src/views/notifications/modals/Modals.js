@@ -16,6 +16,7 @@ import {
   CTooltip,
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
+import FormControl from '../../forms/form-control/FormControl'
 
 const LiveDemo = () => {
   const [visible, setVisible] = useState(false)
@@ -269,21 +270,19 @@ const ScrollingLongContent2 = () => {
   )
 }
 
-const VerticallyCentered = () => {
+export const VerticallyCentered = () => {
   const [visible, setVisible] = useState(false)
   return (
     <>
       <CButton color="primary" onClick={() => setVisible(!visible)}>
-        Vertically centered modal
+        EDIT
       </CButton>
       <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
         <CModalHeader>
           <CModalTitle>Modal title</CModalTitle>
         </CModalHeader>
-        <CModalBody>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-          in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-        </CModalBody>
+        {/* <FormControl /> */}
+        Apply FormControl
         <CModalFooter>
           <CButton color="secondary" onClick={() => setVisible(false)}>
             Close

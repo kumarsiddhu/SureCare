@@ -12,7 +12,10 @@ import {
   CAccordionItem,
   CAccordionHeader,
   CAccordionBody,
+  CButton,
+  CModal,
 } from '@coreui/react'
+import { VerticallyCentered } from '../notifications/modals/Modals'
 
 const ProviderViewDetails = () => {
   const { id } = useParams() // Get the provider ID from the URL
@@ -145,46 +148,51 @@ const ProviderViewDetails = () => {
                   <CAccordionItem itemKey={1}>
                     <CAccordionHeader>Personal Information</CAccordionHeader>
                     <CAccordionBody>
-                      <div className="provider-details-grid mt-4" style={gridStyle}>
-                        <p style={{ margin: 0 }}>
-                          <strong>ID:</strong> {provider.id}
-                        </p>
-                        <p style={{ margin: 0 }}>
-                          <strong>Full Name:</strong> {provider.fullname}
-                        </p>
-                        <p style={{ margin: 0 }}>
-                          <strong>DOB:</strong> {provider.dob}
-                        </p>
-                        <p style={{ margin: 0 }}>
-                          <strong>Gender:</strong> {provider.gender}
-                        </p>
-                        <p style={{ margin: 0 }}>
-                          <strong>Father's Name:</strong> {provider.fathersname}
-                        </p>
-                        <p style={{ margin: 0 }}>
-                          <strong>Email:</strong> {provider.email}
-                        </p>
-                        <p style={{ margin: 0 }}>
-                          <strong>Pincode:</strong> {provider.pincode}
-                        </p>
-                        <p style={{ margin: 0 }}>
-                          <strong>Street:</strong> {provider.street}
-                        </p>
-                        <p style={{ margin: 0 }}>
-                          <strong>Address Line 1:</strong> {provider.addressLine1}
-                        </p>
-                        <p style={{ margin: 0 }}>
-                          <strong>Address Line 2:</strong> {provider.addressLine2}
-                        </p>
-                        <p style={{ margin: 0 }}>
-                          <strong>City:</strong> {provider.city}
-                        </p>
-                        <p style={{ margin: 0 }}>
-                          <strong>State:</strong> {provider.state}
-                        </p>
-                        <p style={{ margin: 0 }}>
-                          <strong>Adhar Card Number:</strong> {provider.adharCardNumber}
-                        </p>
+                      <div className="d-flex  position-relative  ">
+                        <div className="d-flex justify-content-end w-25 position-absolute top-0 end-0  ">
+                          <VerticallyCentered />
+                        </div>
+                        <div className="provider-details-grid mt-5" style={gridStyle}>
+                          <p style={{ margin: 0 }}>
+                            <strong>ID:</strong> {provider.id}
+                          </p>
+                          <p style={{ margin: 0 }}>
+                            <strong>Full Name:</strong> {provider.fullname}
+                          </p>
+                          <p style={{ margin: 0 }}>
+                            <strong>DOB:</strong> {provider.dob}
+                          </p>
+                          <p style={{ margin: 0 }}>
+                            <strong>Gender:</strong> {provider.gender}
+                          </p>
+                          <p style={{ margin: 0 }}>
+                            <strong>Father's Name:</strong> {provider.fathersname}
+                          </p>
+                          <p style={{ margin: 0 }}>
+                            <strong>Email:</strong> {provider.email}
+                          </p>
+                          <p style={{ margin: 0 }}>
+                            <strong>Pincode:</strong> {provider.pincode}
+                          </p>
+                          <p style={{ margin: 0 }}>
+                            <strong>Street:</strong> {provider.street}
+                          </p>
+                          <p style={{ margin: 0 }}>
+                            <strong>Address Line 1:</strong> {provider.addressLine1}
+                          </p>
+                          <p style={{ margin: 0 }}>
+                            <strong>Address Line 2:</strong> {provider.addressLine2}
+                          </p>
+                          <p style={{ margin: 0 }}>
+                            <strong>City:</strong> {provider.city}
+                          </p>
+                          <p style={{ margin: 0 }}>
+                            <strong>State:</strong> {provider.state}
+                          </p>
+                          <p style={{ margin: 0 }}>
+                            <strong>Adhar Card Number:</strong> {provider.adharCardNumber}
+                          </p>
+                        </div>
                       </div>
                     </CAccordionBody>
                   </CAccordionItem>
