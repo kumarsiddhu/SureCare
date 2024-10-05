@@ -1,14 +1,18 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom' // Import useNavigate
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { CForm, CFormInput, CInputGroup, CInputGroupText, CButton } from '@coreui/react'
 import DataTable from 'react-data-table-component'
 import CIcon from '@coreui/icons-react'
 import { cilSearch } from '@coreui/icons'
+import axios from 'axios'
 
 const CustomerManagement = () => {
   const navigate = useNavigate() // Initialize useNavigate
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState('') // For search input
+  const [customerData, setCustomerData] = useState([]) // State to store customer data
+  const [loading, setLoading] = useState(false) // State to handle loading state
 
+  // Define columns for DataTable
   const columns = [
     {
       name: 'Full Name',
@@ -40,31 +44,37 @@ const CustomerManagement = () => {
     },
   ]
 
-  const data = [
-    { id: 1, fullname: 'Beetlejuice', mobileNumber: '7856452178', email: 'nea@gmail.com', status: "Inactive" },
-    {
-      id: 2,
-      fullname: 'Ghostbusters',
-      mobileNumber: '9876543210',
-      email: 'ghostbusters@gmail.com',
-      status: "Active"
-    },
-    { id: 3, fullname: 'Inception', mobileNumber: '1234567890', email: 'inception@gmail.com', status: "Active" },
-  ];
+  // Fetch customer data from API on component mount
+  useEffect(() => {
+    setLoading(true)
+    axios
+      .get('https://api-generator.retool.com/uqkjI8/data')
+      .then((response) => {
+        setCustomerData(response.data) // Store the fetched data in state
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.error('Error fetching customer data:', error)
+        setLoading(false)
+      })
+  }, [])
 
-  const filteredData = data.filter(
+  // Filter the data based on search query
+  const filteredData = customerData.filter(
     (item) =>
       item.fullname.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.mobileNumber.includes(searchQuery) ||
       item.email.toLowerCase().includes(searchQuery.toLowerCase()),
   )
 
+  // Navigate to customer details page
   const handleCustomerViewDetails = (id) => {
-    navigate(`/customer-management/${id}`) // Navigate to the details page with the ID
+    navigate(`/customer-management/${id}`) // Navigate to details page with the customer ID
   }
 
   return (
     <>
+      {/* Search Form */}
       <CForm className="d-flex justify-content-end">
         <CInputGroup className="mb-3 w-25">
           <CInputGroupText>
@@ -79,8 +89,14 @@ const CustomerManagement = () => {
           />
         </CInputGroup>
       </CForm>
-      
-      <DataTable columns={columns} data={filteredData} pagination />
+
+      {/* Data Table */}
+      <DataTable
+        columns={columns}
+        data={filteredData}
+        pagination
+        progressPending={loading} // Show a loading indicator while fetching data
+      />
     </>
   )
 }
