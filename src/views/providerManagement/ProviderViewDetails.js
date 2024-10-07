@@ -252,54 +252,73 @@ const ProviderViewDetails = () => {
                     Edit
                   </CButton>
                 )}
-                <div className="mt-4" style={gridStyle}>
-                  {Object.entries(editedProvider).map(([key, value]) => (
-                    <p key={key}>
-                      <strong>{key}:</strong>{' '}
-                      {key === 'aadharFrontSide' || key === 'aadharBackSide' ? (
-                        editMode ? (
-                          <>
-                            <label htmlFor={key} className="btn btn-primary">
-                              Choose File
-                              <CFormInput
-                                id={key}
-                                name={key}
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => handleFileChange(e, key)}
-                                style={{ display: 'none' }}
-                              />
-                            </label>
-                            {previewImage[key] && (
-                              <p>
-                                <img
-                                  src={value ? value : previewImage[key]}
-                                  alt="Preview"
-                                  style={{
-                                    width: '100px',
-                                    height: 'auto',
-                                    marginTop: '10px',
-                                  }}
-                                />
-                              </p>
-                            )}
-                          </>
-                        ) : value ? (
-                          <p>
-                            <img src={value} alt={key} style={{ width: '100px', height: 'auto' }} />
-                          </p>
-                        ) : (
-                          <div>No Image Uploaded</div>
-                        )
-                      ) : editMode && key !== 'id' ? (
-                        <CFormInput name={key} value={value} onChange={handleInputChange} />
-                      ) : (
-                        value || 'NA'
-                      )}
-                    </p>
-                  ))}
+                <div className="mt-4">
+                  {/* Personal Information Section */}
+                  <h5>Personal Information</h5>
+                  <div style={gridStyle}>
+                    {Object.entries(editedProvider)
+                      .filter(([key]) => key !== 'aadharFrontSide' && key !== 'aadharBackSide') // Exclude document fields
+                      .map(([key, value]) => (
+                        <p key={key}>
+                          <strong>{key}:</strong>{' '}
+                          {editMode && key !== 'id' ? (
+                            <CFormInput name={key} value={value} onChange={handleInputChange} />
+                          ) : (
+                            value || 'NA'
+                          )}
+                        </p>
+                      ))}
+                  </div>
                   {mobileError && <p style={{ color: 'red' }}>{mobileError}</p>}
                   {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
+
+                  {/* Documents Section */}
+                  <h5 className="mt-4">Documents</h5>
+                  <div style={gridStyle} className="mt-4">
+                    {['aadharFrontSide', 'aadharBackSide'].map((key) => {
+                      const value = editedProvider[key] // Get value from editedProvider
+
+                      return (
+                        <p key={key}  >
+                          <strong>{key.replace(/([A-Z])/g, ' $1') }:</strong>
+                          {editMode ? (
+                            <>
+                              <label htmlFor={key} className="btn btn-primary">
+                                Choose File
+                                <CFormInput
+                                  id={key}
+                                  name={key}
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => handleFileChange(e, key)}
+                                  style={{ display: 'none' }}
+                                />
+                              </label>
+                              {previewImage[key] && (
+                                <p className='mt-2'>
+                                <a href={previewImage[key]} target='_blank'><img
+                                    src={previewImage[key]} // Fix for preview rendering
+                                    alt={`${key} Preview`}
+                                    style={{ width: '100px', height: 'auto', marginTop: '10px' }}
+                                  /></a>
+                                </p>
+                              )}
+                            </>
+                          ) : value ? (
+                            <p>
+                              <img
+                                src={value}
+                                alt={key}
+                                style={{ width: '100px', height: 'auto' }}
+                              />
+                            </p>
+                          ) : (
+                            <div>No Image Uploaded</div>
+                          )}
+                        </p>
+                      )
+                    })}
+                  </div>
                 </div>
               </CAccordionBody>
             </CAccordionItem>
@@ -416,7 +435,7 @@ const ProviderViewDetails = () => {
             <CAccordionItem itemKey={2}>
               <CAccordionHeader>Appointments Information</CAccordionHeader>
               <CAccordionBody>
-              <h1>Appointments Information</h1>
+                <h1>Appointments Information</h1>
                 {/* <ProviderDetailsGrid data={providerData} /> */}
               </CAccordionBody>
             </CAccordionItem>
