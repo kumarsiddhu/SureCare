@@ -39,6 +39,7 @@ const CustomerManagement = () => {
       ),
       sortable: true,
     },
+
     {
       name: 'Actions',
       cell: (row) => (
@@ -131,7 +132,7 @@ const CustomerManagement = () => {
       ) : filteredData.length === 0 ? ( // Check if no data is available after filtering
         <div style={centeredMessageStyle}>There are no records to display</div>
       ) : (
-        <DataTable columns={columns} data={filteredData} pagination />
+        <DataTable columns={columns} data={filteredData} pagination striped />
       )}
     </>
   )

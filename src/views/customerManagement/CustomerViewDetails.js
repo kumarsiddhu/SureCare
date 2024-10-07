@@ -166,7 +166,27 @@ const CustomerViewDetails = () => {
           {activeTab === 'basic' && (
             <CAccordion className="mt-4" activeItemKey={1}>
               <CAccordionItem itemKey={1}>
-                <CAccordionHeader>Personal Information</CAccordionHeader>
+                <CAccordionHeader>
+                  {' '}
+                  <span>Personal Information</span>
+                  <span
+                    style={{
+                      marginLeft: '10px', // Spacing between text and indicator
+                      width: '10px',
+                      height: '10px',
+                      borderRadius: '50%', // Makes it a circle
+                      display: 'inline-block',
+                      backgroundColor:
+                        customer.status === 'active'
+                          ? 'green'
+                          : customer.status === 'inactive'
+                            ? 'orange'
+                            : customer.status === 'suspended'
+                              ? 'red'
+                              : 'gray', // Default color for unknown status
+                    }}
+                  />
+                </CAccordionHeader>
                 <CAccordionBody>
                   <>
                     <div className="mt-3 ">
