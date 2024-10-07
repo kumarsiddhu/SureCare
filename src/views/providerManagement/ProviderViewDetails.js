@@ -81,7 +81,13 @@ const handleFileChange = (e) => {
 // Reusable Grid component for displaying provider details
 const ProviderDetailsGrid = ({ data }) => {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '1rem',
+      }}
+    >
       {Object.entries(data).map(([key, value]) => (
         <p key={key} style={{ margin: 0 }}>
           <strong>{key}:</strong> {value}
@@ -99,7 +105,7 @@ const ProviderViewDetails = () => {
   const [editedExperience, setEditedExperience] = useState(experiencedetails)
 
   const [editedBankdetails, setEditedBankdetails] = useState(bankaccountdetailsData)
-
+  const [previewImage, setPreviewImage] = useState({})
   const [mobileError, setMobileError] = useState('')
   const [emailError, setEmailError] = useState('')
 
@@ -176,6 +182,24 @@ const ProviderViewDetails = () => {
     gap: '1rem',
   }
 
+  const handleFileChange = (event, key) => {
+    const file = event.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPreviewImage((prevState) => ({
+          ...prevState,
+          [key]: reader.result,
+        }))
+        setEditedProvider((prevState) => ({
+          ...prevState,
+          [key]: reader.result,
+        }))
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
   return (
     <div>
       <CCard>
@@ -233,36 +257,39 @@ const ProviderViewDetails = () => {
                     <p key={key}>
                       <strong>{key}:</strong>{' '}
                       {key === 'aadharFrontSide' || key === 'aadharBackSide' ? (
-                        value ? (
+                        editMode ? (
+                          <>
+                            <label htmlFor={key} className="btn btn-primary">
+                              Choose File
+                              <CFormInput
+                                id={key}
+                                name={key}
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => handleFileChange(e, key)}
+                                style={{ display: 'none' }}
+                              />
+                            </label>
+                            {previewImage[key] && (
+                              <p>
+                                <img
+                                  src={value ? value : previewImage[key]}
+                                  alt="Preview"
+                                  style={{
+                                    width: '100px',
+                                    height: 'auto',
+                                    marginTop: '10px',
+                                  }}
+                                />
+                              </p>
+                            )}
+                          </>
+                        ) : value ? (
                           <p>
-                            <img
-                              src={value}
-                              alt={`${key}`}
-                              style={{ width: '100px', height: 'auto' }}
-                            />
+                            <img src={value} alt={key} style={{ width: '100px', height: 'auto' }} />
                           </p>
                         ) : (
-                          <div>
-                            <CFormInput
-                              name={key}
-                              value={value}
-                              onChange={handleInputChange}
-                              disabled={!editMode}
-                            />
-                            {editMode && (
-                              <label htmlFor={key}>
-                                Choose File
-                                <input
-                                  id={key}
-                                  name={key}
-                                  type="file"
-                                  accept="image/*" // Restrict file types (optional)
-                                  onChange={handleFileChange}
-                                  style={{ display: 'none' }} // Hide file input visually
-                                />
-                              </label>
-                            )}
-                          </div>
+                          <div>No Image Uploaded</div>
                         )
                       ) : editMode && key !== 'id' ? (
                         <CFormInput name={key} value={value} onChange={handleInputChange} />
@@ -389,7 +416,8 @@ const ProviderViewDetails = () => {
             <CAccordionItem itemKey={2}>
               <CAccordionHeader>Appointments Information</CAccordionHeader>
               <CAccordionBody>
-                <ProviderDetailsGrid data={providerData} />
+              <h1>Appointments Information</h1>
+                {/* <ProviderDetailsGrid data={providerData} /> */}
               </CAccordionBody>
             </CAccordionItem>
           </CAccordion>
@@ -400,7 +428,8 @@ const ProviderViewDetails = () => {
             <CAccordionItem itemKey={3}>
               <CAccordionHeader>Earnings Information</CAccordionHeader>
               <CAccordionBody>
-                <ProviderDetailsGrid data={providerData} />
+                <h1>Earnings Information</h1>
+                {/* <ProviderDetailsGrid data={providerData} /> */}
               </CAccordionBody>
             </CAccordionItem>
           </CAccordion>
